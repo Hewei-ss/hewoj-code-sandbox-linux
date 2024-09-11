@@ -16,7 +16,7 @@ import java.util.List;
 
 import com.hew.hewojcodesandbox.constant.SandBoxConstants;
 
-import static com.hew.hewojcodesandbox.constant.SandBoxConstants.TIME_OUT;
+import static com.hew.hewojcodesandbox.constant.SandBoxConstants.*;
 
 /**
  * Java 原生代码沙箱实现（直接复用模板方法）
@@ -24,6 +24,8 @@ import static com.hew.hewojcodesandbox.constant.SandBoxConstants.TIME_OUT;
 @Component
 @Slf4j
 public class JavaNativeACMCodesandbox extends JavaCodeSandboxTemplate {
+
+
 
     @Override
     public List<ExecuteMessage> runFile(File userCodeFile, List<String> inputList) throws IOException {
@@ -36,12 +38,10 @@ public class JavaNativeACMCodesandbox extends JavaCodeSandboxTemplate {
             // String runCmd = String.format("/software/jdk1.8.0_361/bin/java -Xmx256m -Dfile.encoding=UTF-8 -cp %s:%s -Djava.security.manager=%s Main", dir, SECURITY_MANAGER_PATH, SECURITY_MANAGER_CLASS_NAME);
          //    String runCmd = String.format("/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/bin/java -Xmx256m -Dfile.encoding=UTF-8 -cp %s Main",userCodeParentPath);
 
+          //  String runCmd = String.format("java -Xmx256m -Dfile.encoding=UTF-8 -cp %s:%s -Djava.security.manager=%s Main", userCodeParentPath, SECURITY_MANAGER_PATH, SECURITY_MANAGER_CLASS_NAME);
             String runCmd = String.format("java -Xmx256m -Dfile.encoding=UTF-8 -cp %s Main",userCodeParentPath);
             //Windows下的命令
             //    String runCmd = String.format("java -Xmx256m -Dfile.encoding=UTF-8 -cp %s;%s -Djava.security.manager=%s Main", dir, SECURITY_MANAGER_PATH, SECURITY_MANAGER_CLASS_NAME);
-          //  String dir=userCodeFile.getAbsolutePath();
-           // String runCmd = String.format("java -Xmx256m -Dfile.encoding=UTF-8 -cp %s Main", userCodeParentPath);
-         //   String runCmd = String.format("java -Xmx256m -Dfile.encoding=UTF-8 -cp %s Main %s", userCodeParentPath, input);
             Process runProcess = Runtime.getRuntime().exec(runCmd);
             // 超时控制
              new Thread(() -> {

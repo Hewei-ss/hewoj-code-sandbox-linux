@@ -20,10 +20,10 @@ public class MySecurityManager extends SecurityManager {
 
     @Override
     public void checkRead(String file) {
-        System.out.println(file);
-        if (file.contains("C:\\code\\yuoj-code-sandbox")) {
-            return;
-        }
+//        System.out.println(file);
+//        if (file.contains("C:\\code\\yuoj-code-sandbox")) {
+//            return;
+//        }
 //        throw new SecurityException("checkRead 权限异常：" + file);
     }
 

@@ -14,7 +14,7 @@ public class MySecurityManager extends SecurityManager {
 //        super.checkPermission(perm);
     }
 
-    // 检测程序是否可执行文件
+    // 检测程序是否可执行文件。检测到是一个可执行文件如果要拒绝就直接抛异常
     @Override
     public void checkExec(String cmd) {
         throw new SecurityException("checkExec 权限异常：" + cmd);
@@ -25,13 +25,13 @@ public class MySecurityManager extends SecurityManager {
     @Override
     public void checkRead(String file) {
         System.out.println(file);
-        if (file.contains("C:\\code\\yuoj-code-sandbox")) {
+        if (file.contains("/Users/hewei/IdeaWorkSpace/hewoj-code-sandbox")) {
             return;
         }
-//        throw new SecurityException("checkRead 权限异常：" + file);
+        throw new SecurityException("checkRead 权限异常：" + file);
     }
 
-    // 检测程序是否允许写文件
+    // 检测程序是否允许写文件，直接抛异常表示不允许程序写操作，不抛异常表示允许程序写操作
     @Override
     public void checkWrite(String file) {
 //        throw new SecurityException("checkWrite 权限异常：" + file);

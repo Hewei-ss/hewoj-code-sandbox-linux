@@ -3,6 +3,7 @@ package com.hew.hewojcodesandbox;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.dfa.FoundWord;
 import cn.hutool.dfa.WordTree;
 import com.hew.hewojcodesandbox.model.ExecuteCodeRequest;
 import com.hew.hewojcodesandbox.model.ExecuteCodeResponse;
@@ -26,6 +27,13 @@ import static com.hew.hewojcodesandbox.constant.SandBoxConstants.TIME_OUT;
 @Slf4j
 public abstract class JavaCodeSandboxTemplate implements Codesandbox{
 
+    private static final WordTree WORD_TREE;
+
+    static {
+        WORD_TREE = new WordTree();
+        WORD_TREE.addWords("Files", "exec");
+    }
+
     private static final String GLOBAL_CODE_DIR_NAME = "tmpCode";
 
     private static final String GLOBAL_JAVA_CLASS_NAME = "Main.java";
@@ -36,6 +44,18 @@ public abstract class JavaCodeSandboxTemplate implements Codesandbox{
         List<String> inputList = executeCodeRequest.getInputList();
         String code = executeCodeRequest.getCode();
         String language = executeCodeRequest.getLanguage();
+
+        //检查有没有违禁词
+        //检查代码内容，是否有黑名单代码
+        FoundWord foundWord = WORD_TREE.matchWord(code);
+        if(foundWord != null){
+            JudgeInfo judgeInfo = new JudgeInfo();
+            judgeInfo.setMessage("包含违禁词，禁止执行");
+            return ExecuteCodeResponse.builder()
+                    .status(ExecuteCodeStatusEnum.RUN_PROHIBIT.getValue())
+                    .judgeInfo(judgeInfo)
+                    .build();
+        }
         // 1.将用户提交的代码文件保存为文件
         File userCodeFile=saveCodeToFile(code);
         //2.编译代码得到class文件
@@ -67,6 +87,7 @@ public abstract class JavaCodeSandboxTemplate implements Codesandbox{
      * @return
      */
     public File saveCodeToFile(String code){
+
         // 1.将用户提交的代码文件保存为文件
         String userDir = System.getProperty("user.dir");
 

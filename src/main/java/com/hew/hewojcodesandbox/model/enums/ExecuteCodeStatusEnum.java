@@ -9,10 +9,12 @@ import java.util.stream.Collectors;
 
 @Getter
 public enum ExecuteCodeStatusEnum {
+    RUN_PROHIBIT("包含违禁词，禁止执行",5),
     NO_AUTH("无权限", 4),
     RUN_FAILED("运行失败", 3),
     COMPILE_FAILED("编译失败", 2),
     SUCCESS("成功", 1);
+
 
     private final String msg;
 
